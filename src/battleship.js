@@ -1,3 +1,5 @@
+let  prompt = require('prompt-sync')();
+
 //	Game size setup. Default game implementation is played using an 8x8 grid.
 const GRID_SIZE = 8;
 
@@ -17,8 +19,20 @@ const SHIP_SIZE = {
 
 let intro_rules = (first_time) =>{
 	if(first_time == true){
-		console.log("Welcome to battleship.");
+		console.log("Welcome to Battleship.");
 	}
+
+	console.log(`Battleship rules:
+	Battleship is a two player game where each player takes turns attempting to sink the other player's ships.
+
+	Each player begins with 5 ships each, the grid is currently set to be ${GRID_SIZE}x${GRID_SIZE}.
+
+	Every turn, a player gets the chance to choose a spot on the Grid to target. If the grid is occupied, it's a hit.
+	If it's empty, it's a miss. If the spot has already been called out, then the player must rechoose a spot.
+
+	If all spots a ship occupies are hit, the ship is sunk. The game ends when one player sinks all of the other players' ships.`);
+
+	return;
 };
 
 
@@ -29,8 +43,11 @@ let intro_rules = (first_time) =>{
  *	Example: Input - B7 => Output: 1, 6
  */
 let mapSpacetoGrid = (letter, number) =>{
+	if(isNaN(number) || !letter.match(/[A-Za-z]/i)){
+		return false;
+	}
 	let y = number-1;
-	let x = letter.toLowerCase().charCodeAt() -97;
+	let x = letter.toLowerCase().charCodeAt()-97;
 	//if space falls out of grid range, ask
 	if(x < 0 || x > GRID_SIZE || y < 0 || y > GRID_SIZE){
 		console.log("Invalid range entered");
@@ -80,6 +97,9 @@ class Grid{
 		let target = mapSpacetoGrid(space[0], space[1]);
 		let space_selected = this.spaces[target[0]][target[1]];
 		//space has already been attacked
+		if(target == false){
+			console.log("Invalid input for space");
+		}
 		if(space_selected.targeted){
 			return false;
 		}
@@ -105,13 +125,19 @@ class Grid{
 		}
 	}
 	/*
-	 *	Places ship on grid starting at given space, with given orientation
+	 *	Places ship on grid starting at given space, with given orientation (ships can be placed
+	 *	horizontally or vertically on the grid).
 	 *	First, check if ship is placed in bounds of grid.
 	 *	Then, check to see that it is not overlapping another already placed ship.
+	 *	If not, place on grid, marking spaces as occupied and add ship to board
+	 *	Returns boolean indicating whether or not ship was placed.
 	 */
 	place(ship, space, orientation){
 		let o = orientation.toLowerCase();
 		let start = mapSpacetoGrid(space[0], space[1]);
+		if(start == false){
+			console.log("Invalid input for space");
+		}
 		if(o == 'v'){
 			if(start[0] + ship.size > (GRID_SIZE - 1)){
 				console.log("That range is out of bounds.")
@@ -151,7 +177,8 @@ class Grid{
 			return false;
 		}
 		this.ships_remaining[ship.type] = ship;
-		return;
+		console.log("Placed successfully!")
+		return true;
 	}
 
 
@@ -172,9 +199,49 @@ class Ship{
 
 }
 
+let head = "    1  2  3  4  5  6  7  8";
+console.log(head);
+for(let i = 0; i < GRID_SIZE; i++){
+	let row = `${String.fromCharCode(i+65)}`;
+	for(let j=0; j < GRID_SIZE; j++){
+		row+=" |_";
+	}
+	row+=" |";
+	console.log(row);
+}
+
 //driver function to actually play game
 let gameDriver = () =>{
-	intro_rules(false);
-}
+	intro_rules(true);
+	let boards = [];
+	boards[0] = new Grid();
+	boards[1] = new Grid();
+
+	let player_place = (player) =>{
+		console.log(`Player ${player}, it's time to place your ships on the grid.`)
+		for(let i in SHIP_SIZE){
+			let ship = new Ship(i)
+			let placed = false;
+			while(placed == false){
+				console.log(`A ${ship.type} is ${SHIP_SIZE[i]} spaces long.`)
+				console.log(`Where on the board would you like the ship placed? 
+		The location you give will be the starting point, and the ship will take up successive spaces to the right (horizontally) or down (vertically).`);
+				console.log("Would you like this ship placed horizontally or vertically");
+
+				let o = prompt("Type 'v' for vertical or 'h' for horizontal");
+				let space = [];
+				space[0] = prompt(`Type the row you would like to start (A-${String.fromCharCode(GRID_SIZE+65-1)})\n`);
+				console.log(space);
+				space[1] = prompt(`Type the column you would like to start (1-${GRID_SIZE})\n`);
+
+				placed = boards[player-1].place(ship, space, o);
+			}
+		}
+	};
+	player_place(1);
+	player_place(2);
+};
+
+gameDriver();
 
 

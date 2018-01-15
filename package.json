@@ -1,0 +1,25 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "battleship javascript",
+  "main": "src/battleship.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanzstv/battleship-js.git"
+  },
+  "author": "Steven Sanz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sanzstv/battleship-js/issues"
+  },
+  "homepage": "https://github.com/sanzstv/battleship-js#readme",
+  "dependencies": {
+    "prompt-sync": "^4.1.5"
+  }
+}
