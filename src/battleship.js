@@ -39,7 +39,6 @@ let gameDriver = () =>{
 	console.log("Now, both players will have a chance to place their ships. It's advisable to tell your opponent to look away.");
 	let player_place = (player) =>{
 		console.log(`\n\n\n\n\n\n\n\n\n\nPlayer ${player}, it's time to place your ships on the grid. NOTE: Input will be hidden while typing.`);
-		console.log(app.SHIP_SIZE);
 		for(let i in app.SHIP_SIZE){
 			let ship = new app.Ship(i)
 			let placed = false;

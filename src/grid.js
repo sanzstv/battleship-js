@@ -24,7 +24,6 @@ const SHIP_SIZE = {
  *	Example: Input - B7 => Output: 1, 6
  */
 let mapSpacetoGrid = (letter, number) =>{
-	console.log(letter);
 	if(isNaN(number) || (!letter.match(/[A-Za-z]/i)) || letter.length != 1){
 		return false;
 	}
@@ -85,7 +84,7 @@ class Grid{
 		}
 		let space_selected = this.spaces[target[0]][target[1]];
 		if(space_selected.targeted){
-			console.log("Already taken");
+			console.log("Already taken, please pick another space!");
 			return false;
 		}
 		else{
