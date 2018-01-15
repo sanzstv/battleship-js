@@ -1,14 +1,15 @@
+let app = require('../src/grid.js');
 //written assuming 8x8 Grid size
 describe("Map Space To Grid", function(){ 
-   it("given a space value, returns pair of numbers if space is valid",
+   it("should, given a space value, returns pair of numbers if space is valid",
    	function(){ 
-    	expect(mapSpacetoGrid("B", 7)).toEqual([1, 6]); 
-    	expect(mapSpacetoGrid("a", 1)).toEqual([0, 0]); 
+    	expect(app.mapSpacetoGrid("B", 7)).toEqual([1, 6]); 
+    	expect(app.mapSpacetoGrid("a", 1)).toEqual([0, 0]); 
    }); 
     
    it("if space is invalid/out of range, returns false", function(){
-      expect(mapSpacetoGrid("Z", 4)).toEqual(false); 
-      expect(mapSpacetoGrid("C", 12)).toEqual(false); 
+      expect(app.mapSpacetoGrid("Z", 4)).toEqual(false); 
+      expect(app.mapSpacetoGrid("C", 12)).toEqual(false); 
    });   
    
 
@@ -16,17 +17,17 @@ describe("Map Space To Grid", function(){
 
 describe("Ship class", function(){
 	it("should have a size and type defined on initalization", function(){
-		let battleship = new Ship("battleship");
+		let battleship = new app.Ship("battleship");
 		expect(battleship.type).toEqual("battleship");
-		expect(battleship.size).toEqual(SHIP_SIZE["battleship"]);
+		expect(battleship.size).toEqual(app.SHIP_SIZE["battleship"]);
 	});
 });
 
 
 describe("Grid class", function(){
-	let player_grid = new Grid();
-	let destroyer = new Ship("destroyer");
-	let battleship = new Ship("battleship");
+	let player_grid = new app.Grid();
+	let destroyer = new app.Ship("destroyer");
+	let battleship = new app.Ship("battleship");
 
 	it("should initialize spaces as unoccupied and untargeted", function(){
 		expect(player_grid.spaces[0][0].occupied).toEqual(false);

@@ -12,7 +12,9 @@ and follow the command line prompts and instructions to continue.
 
 Game experience is enhanced by emphatically declaring your moves as you type them.
 
-Unit tests can be run in the browser through the BattleshipSpec.html file.
+Unit tests can be run with the command:
+
+	`jasmine`
 
 Rules:
 	Battleship is a two player game where each player takes turns attempting to sink the other player's ships.
