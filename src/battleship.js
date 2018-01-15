@@ -1,12 +1,13 @@
-let  prompt = require('prompt-sync')();
+let prompt = require('prompt-sync')();
 
-//	Game size setup. Default game implementation is played using an 8x8 grid.
+//	Game size config. Default game implementation is played using an 8x8 grid.
 const GRID_SIZE = 8;
 
 /*
  *	Predefined battleship sizes, default is 3 if you want to add a new one 
  *	unless it is defined explictly here.
  */
+
 const SHIP_SIZE = {
 	'carrier': 5,
 	'battleship': 4,
@@ -14,7 +15,6 @@ const SHIP_SIZE = {
 	'submarine': 3,
 	'destroyer': 2
 };
-
 //	Intro and rules. Welcomes player to game and overviews rules.
 
 let intro_rules = (first_time) =>{
@@ -99,8 +99,10 @@ class Grid{
 		//space has already been attacked
 		if(target == false){
 			console.log("Invalid input for space");
+			return false;
 		}
 		if(space_selected.targeted){
+			console.log("Already taken");
 			return false;
 		}
 		else{
@@ -139,7 +141,7 @@ class Grid{
 			console.log("Invalid input for space");
 		}
 		if(o == 'v'){
-			if(start[0] + ship.size > (GRID_SIZE - 1)){
+			if(start[0] + ship.size -1 >= GRID_SIZE){
 				console.log("That range is out of bounds.")
 				return false;
 			}
@@ -156,7 +158,7 @@ class Grid{
 			}
 		}
 		else if(o == 'h'){
-			if(start[1] + ship.size > (GRID_SIZE - 1)){
+			if(start[1] + ship.size - 1 >= (GRID_SIZE)){
 				console.log("That range is out of bounds.")
 				return false;
 			}
@@ -210,36 +212,74 @@ for(let i = 0; i < GRID_SIZE; i++){
 	console.log(row);
 }
 
-//driver function to actually play game
+//driver function to actually run game
 let gameDriver = () =>{
 	intro_rules(true);
 	let boards = [];
 	boards[0] = new Grid();
 	boards[1] = new Grid();
-
+	let letter_max = String.fromCharCode(GRID_SIZE+65-1);
 	let player_place = (player) =>{
-		console.log(`Player ${player}, it's time to place your ships on the grid.`)
+		console.log(`\n\n\n\n\n\n\n\n\n\nPlayer ${player}, it's time to place your ships on the grid.`)
 		for(let i in SHIP_SIZE){
 			let ship = new Ship(i)
 			let placed = false;
 			while(placed == false){
 				console.log(`A ${ship.type} is ${SHIP_SIZE[i]} spaces long.`)
-				console.log(`Where on the board would you like the ship placed? 
-		The location you give will be the starting point, and the ship will take up successive spaces to the right (horizontally) or down (vertically).`);
+				console.log(`Where on the board would you like the ship placed? The location you give will be the starting point, and the ship will take up successive spaces to the right (horizontally) or down (vertically).`);
 				console.log("Would you like this ship placed horizontally or vertically");
 
 				let o = prompt("Type 'v' for vertical or 'h' for horizontal");
 				let space = [];
-				space[0] = prompt(`Type the row you would like to start (A-${String.fromCharCode(GRID_SIZE+65-1)})\n`);
-				console.log(space);
-				space[1] = prompt(`Type the column you would like to start (1-${GRID_SIZE})\n`);
+				space[0] = prompt('Type the letter of the row you would like your ship to start on (A-' + 'letter_max)\n');
+				space[1] = prompt('Type the number of the column you would like your ship to start on (1-' + GRID_SIZE +')\n');
 
 				placed = boards[player-1].place(ship, space, o);
 			}
 		}
 	};
 	player_place(1);
+	console.log("Player 1 is ready to play!\n\n\n\n\n");
 	player_place(2);
+	console.log("Player 2 is ready to play!\n\n\n\n\n");
+
+	console.log("Now the game officially begins! Each player will take turns attacking until the other is out of ships.\n\n\n");
+
+	let win = false;
+	//main game loop
+	//each iteration represents 1 round (each player gets a chance to attack)
+	while(1){
+		let space = [];
+		for(let i = 1; i <= 2; i++){
+			let attack = false;
+			while(attack == false){
+				console.log(`Player ${i}'s turn\n\n\n`);
+				space[0] = prompt('Type the letter of the row you would like to attack (A-' + 'letter_max)\n');
+				space[1] = prompt('Type the number of the column you would like to attack (1-' + GRID_SIZE +')\n');
+				if(i == 1){
+					attack = boards[1].attack(space);
+				}
+				else{
+					attack = boards[0].attack(space);
+				}
+			}
+			console.log(attack);
+			//check victory condition
+			if(i == 1){
+				if((Object.keys(boards[1].ships_remaining).length == 0)){
+					console.log("Player 1 wins!");
+					return;
+				}
+			}
+			else{
+				if((Object.keys(boards[0].ships_remaining).length == 0)){
+					console.log("Player 2 wins!");
+					return;
+				}
+			}
+		}
+	}
+	return;
 };
 
 gameDriver();
