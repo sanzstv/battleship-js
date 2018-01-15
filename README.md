@@ -16,7 +16,7 @@ Unit tests can be run with the command:
 
 	jasmine
 
-Rules:
+## Rules:
 Battleship is a two player game where each player takes turns attempting to sink the other player's ships.
 
 Each player begins with 5 ships each, the grid by default is set to be 8x8.
