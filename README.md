@@ -1,4 +1,4 @@
-#Battleship JavaScript Game
+# Battleship JavaScript Game
 
 Javascript implementation of the classic board game/Rihanna movie.
 

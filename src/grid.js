@@ -1,18 +1,21 @@
+/*
+ *	Setup and logic of that the Battleship game is built upon.
+ */
+'use strict';
 //	Game size config. Default game implementation is played using an 8x8 grid.
 const GRID_SIZE = 8;
 
 /*
- *	Predefined battleship sizes, default is 3 if you want to add a new one 
- *	unless it is defined explictly here.
+ *	Predefined battleship sizes, game will run with the ships defined here.
  */
 
 const SHIP_SIZE = {
-	'carrier': 5,
 	'battleship': 4,
-	'cruiser': 3,
 	'submarine': 3,
+	//'cruiser' : 3,
 	'destroyer': 2
 };
+
 
 /*
  *	Maps the input space, which is in the format "LetterNumber" 
@@ -21,7 +24,8 @@ const SHIP_SIZE = {
  *	Example: Input - B7 => Output: 1, 6
  */
 let mapSpacetoGrid = (letter, number) =>{
-	if(isNaN(number) || !letter.match(/[A-Za-z]/i)){
+	console.log(letter);
+	if(isNaN(number) || (!letter.match(/[A-Za-z]/i)) || letter.length != 1){
 		return false;
 	}
 	let y = number-1;
@@ -73,12 +77,13 @@ class Grid{
 	 */
 	attack(space){
 		let target = mapSpacetoGrid(space[0], space[1]);
-		let space_selected = this.spaces[target[0]][target[1]];
 		//space has already been attacked
+		console.log(target);
 		if(target == false){
 			console.log("Invalid input for space");
 			return false;
 		}
+		let space_selected = this.spaces[target[0]][target[1]];
 		if(space_selected.targeted){
 			console.log("Already taken");
 			return false;
@@ -117,6 +122,7 @@ class Grid{
 		let start = mapSpacetoGrid(space[0], space[1]);
 		if(start == false){
 			console.log("Invalid input for space");
+			return false;
 		}
 		if(o == 'v'){
 			if(start[0] + ship.size -1 >= GRID_SIZE){
