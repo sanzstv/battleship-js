@@ -26,4 +26,4 @@ If it's empty, it's a miss. If the spot has already been called out, then the pl
 
 If all spots a ship occupies are hit, the ship is sunk. The game ends when one player sinks all of the other players' ships.
 
-Grid.js contains configuration of game logic and rules including board size and the ships in play.
+src/grid.js contains configuration of game logic and rules including board size and the ships in play.
