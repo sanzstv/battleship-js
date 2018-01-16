@@ -2,6 +2,7 @@
  *	Setup and logic of that the Battleship game is built upon.
  */
 'use strict';
+let colors = require('colors/safe'); // does not alter string prototype
 //	Game size config. Default game implementation is played using an 8x8 grid.
 const GRID_SIZE = 8;
 
@@ -12,7 +13,7 @@ const GRID_SIZE = 8;
 const SHIP_SIZE = {
 	//'battleship': 4,
 	//'submarine': 3,
-	//'cruiser' : 3,
+	'cruiser' : 3,
 	'destroyer': 2
 };
 
@@ -31,7 +32,7 @@ let mapSpacetoGrid = (letter, number) =>{
 	let x = letter.toLowerCase().charCodeAt()-97;
 	//if space falls out of grid range, ask
 	if(x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE){
-		console.log("Invalid range entered");
+		console.log(colors.red("ERROR: Invalid space, input entered is not in range."));
 		return false;
 	}
 	else{
@@ -78,18 +79,18 @@ class Grid{
 		let target = mapSpacetoGrid(space[0], space[1]);
 		//space has already been attacked
 		if(target == false){
-			console.log("Invalid input for space");
+			console.log(colors.red("ERROR: Invalid input for space.\n"));
 			return false;
 		}
 		let space_selected = this.spaces[target[0]][target[1]];
 		if(space_selected.targeted){
-			console.log("Already taken, please pick another space!");
+			console.log(colors.red("Already taken, please pick another space.\n"));
 			return false;
 		}
 		else{
 			//empty space
 			if(!space_selected.occupied){
-				return "Miss";
+				return colors.red("Miss");
 			}
 			//space is occupied, mark space as targeted, take one space away from ship
 			else{
@@ -99,10 +100,10 @@ class Grid{
 				//ship has been sunk, remove from currently active ships array
 				if(ship.remaining == 0){
 					delete this.ships_remaining[ship.type];
-					return `The ${ship.type} has been sunk`;
+					return colors.green(`The ${ship.type} has been sunk`);
 				}
 				else{
-					return "Hit";
+					return colors.green("Hit");
 				}
 			}
 		}
@@ -119,18 +120,18 @@ class Grid{
 		let o = orientation.toLowerCase();
 		let start = mapSpacetoGrid(space[0], space[1]);
 		if(start == false){
-			console.log("Invalid input for space");
+			console.log(colors.red("ERROR: Invalid input for space.\n"));
 			return false;
 		}
 		if(o == 'v'){
 			if(start[0] + ship.size -1 >= GRID_SIZE){
-				console.log("That range is out of bounds.")
+				console.log(colors.red("ERROR: That range is out of bounds.\n"));
 				return false;
 			}
 
 			for(let i = start[0]; i < start[0] + ship.size; i++){
 				if(this.spaces[i][start[1]].occupied == true){
-					console.log("Please select a space that is not occupied already.");
+					console.log(colors.red("ERROR: Please select a space that is not occupied already.\n"));
 					return false;
 				}
 			}
@@ -141,12 +142,12 @@ class Grid{
 		}
 		else if(o == 'h'){
 			if(start[1] + ship.size - 1 >= (GRID_SIZE)){
-				console.log("That range is out of bounds.")
+				console.log(colors.red("ERROR: That range is out of bounds.\n"));
 				return false;
 			}
 			for(let i = start[1]; i < start[1] + ship.size; i++){
 				if(this.spaces[start[0]][i].occupied == true){
-					console.log("Please select a space that is not occupied already.");
+					console.log(colors.red("ERROR: Please select a space that is not occupied already.\n"));
 					return false;					
 				}				
 			}
@@ -157,11 +158,11 @@ class Grid{
 
 		}
 		else{
-			console.log("Invalid orientation. Enter 'v' for vertical, or 'h' for horizontal.");
+			console.log(colors.red("ERROR: Invalid orientation. Enter 'v' for vertical, or 'h' for horizontal.\n"));
 			return false;
 		}
 		this.ships_remaining[ship.type] = ship;
-		console.log("Placed successfully!")
+		console.log("Placed successfully!\n")
 		return true;
 	}
 
