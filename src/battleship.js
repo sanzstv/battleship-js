@@ -143,7 +143,14 @@ let gameDriver = () =>{
 				}
 
 			}
-			console.log(attack);
+			//result of attack
+			if(attack == "Miss"){
+				console.log(colors.red(attack));
+			}
+			else{
+				console.log(colors.green(attack));
+
+			}
 			//check victory condition after each attack
 			if(i == 1){
 				if((Object.keys(boards[1].ships_remaining).length == 0)){

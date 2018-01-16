@@ -11,7 +11,7 @@ const GRID_SIZE = 8;
  */
 
 const SHIP_SIZE = {
-	//'battleship': 4,
+	'battleship': 4,
 	//'submarine': 3,
 	'cruiser' : 3,
 	'destroyer': 2
@@ -90,7 +90,7 @@ class Grid{
 		else{
 			//empty space
 			if(!space_selected.occupied){
-				return colors.red("Miss");
+				return "Miss";
 			}
 			//space is occupied, mark space as targeted, take one space away from ship
 			else{
@@ -100,10 +100,10 @@ class Grid{
 				//ship has been sunk, remove from currently active ships array
 				if(ship.remaining == 0){
 					delete this.ships_remaining[ship.type];
-					return colors.green(`The ${ship.type} has been sunk`);
+					return `The ${ship.type} has been sunk`;
 				}
 				else{
-					return colors.green("Hit");
+					return "Hit";
 				}
 			}
 		}
