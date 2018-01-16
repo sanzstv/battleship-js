@@ -105,12 +105,9 @@ let gameDriver = () =>{
 				console.log(colors.bold(`\n\n\nPlayer ${i}'s turn\n\n\n`));
 				//status report
 				console.log("Status report:");
-				if(i == 1){
-					console.log(`Player 2 has ${Object.keys(boards[1].ships_remaining).length} ships remaining.\n\n\n`);
-				}
-				if(i ==2){
-					console.log(`Player 1 has ${Object.keys(boards[0].ships_remaining).length} ships remaining.\n\n\n`);
-				}
+				console.log(`Player 1 has ${Object.keys(boards[0].ships_remaining).length} ships remaining.\n\n`);
+				console.log(`Player 2 has ${Object.keys(boards[1].ships_remaining).length} ships remaining.\n\n`);
+
 				if(moves[i-1].length>0){
 					console.log("Prior moves:");
 					console.log(moves[i-1].join(", "));
