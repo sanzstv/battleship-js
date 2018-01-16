@@ -2,7 +2,7 @@
 
 Javascript implementation of the classic board game/Rihanna movie.
 
-To play: Grab a friend (real or imaginary), download this repo and load the game using:
+To play: Grab a friend (real or imaginary), download this repo, navigate into the battleship directory and load the game using:
 	
 	npm install
 	node src/battleship.js
