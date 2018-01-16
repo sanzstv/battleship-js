@@ -44,7 +44,8 @@ let gameDriver = () =>{
 			let placed = false;
 			while(placed == false){
 				console.log(`A ${ship.type} is ${app.SHIP_SIZE[i]} spaces long.`)
-				console.log(`Where on the board would you like the ship placed? The location you give will be the starting point, and the ship will take up successive spaces to the right (horizontally) or down (vertically).`);
+				console.log("Where on the board would you like the ship placed? The location you give will be the starting point");
+				console.log("The ship will take up successive spaces to the right on the same row (horizontally) or down on the same column (vertically).");
 				console.log("Would you like this ship placed horizontally or vertically");
 				console.log("\nType 'v' for vertical or 'h' for horizontal");
 				let o = prompt();
@@ -82,6 +83,9 @@ let gameDriver = () =>{
 	//each iteration represents 1 round (each player gets a chance to attack)
 	while(1){
 		let space = [];
+		let moves = [];
+		moves[0] = [];
+		moves[1] = [];
 		for(let i = 1; i <= 2; i++){
 			let attack = false;
 			while(attack == false){
@@ -94,6 +98,9 @@ let gameDriver = () =>{
 				if(i ==2){
 					console.log(`Player 1 has ${Object.keys(boards[0].ships_remaining).length} ships remaining.\n\n\n`);
 				}
+				console.log("Prior moves:");
+				console.log(moves[i-1]);
+
 				console.log('What space would you like to attack?\n');
 				console.log(row);
 				space[0] = prompt();
@@ -111,6 +118,8 @@ let gameDriver = () =>{
 				else{
 					attack = boards[0].attack(space);
 				}
+				//keep track of moves
+				moves[i-1].push(space);
 			}
 			console.log(attack);
 			//check victory condition
@@ -126,6 +135,7 @@ let gameDriver = () =>{
 					return;
 				}
 			}
+
 		}
 	}
 	return;

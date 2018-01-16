@@ -10,9 +10,9 @@ const GRID_SIZE = 8;
  */
 
 const SHIP_SIZE = {
-	'battleship': 4,
+	//'battleship': 4,
 	'submarine': 3,
-	//'cruiser' : 3,
+	'cruiser' : 3,
 	'destroyer': 2
 };
 
@@ -30,7 +30,7 @@ let mapSpacetoGrid = (letter, number) =>{
 	let y = number-1;
 	let x = letter.toLowerCase().charCodeAt()-97;
 	//if space falls out of grid range, ask
-	if(x < 0 || x > GRID_SIZE || y < 0 || y > GRID_SIZE){
+	if(x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE){
 		console.log("Invalid range entered");
 		return false;
 	}
