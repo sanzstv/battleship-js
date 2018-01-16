@@ -11,8 +11,8 @@ const GRID_SIZE = 8;
 
 const SHIP_SIZE = {
 	//'battleship': 4,
-	'submarine': 3,
-	'cruiser' : 3,
+	//'submarine': 3,
+	//'cruiser' : 3,
 	'destroyer': 2
 };
 

@@ -25,55 +25,66 @@ let intro_rules = () =>{
 	return;
 };
 
+/*
+ *	Function to facilitate placing process for each player.
+ *	Returns the board that is created.
+ *
+ */
+let player_place = (board, player) =>{
+	console.log(`\n\n\n\n\n\n\n\n\n\nPlayer ${player}, it's time to place your ships on the grid. NOTE: Input will be hidden while typing.`);
+	for(let i in app.SHIP_SIZE){
+		let ship = new app.Ship(i);
+		let placed = false;
+		while(placed == false){
+			console.log(`A ${ship.type} is ${app.SHIP_SIZE[i]} spaces long.`)
+			console.log("Where on the board would you like the ship placed? The location you give will be the starting point");
+			console.log("The ship will take up successive spaces to the right on the same row (horizontally) or down on the same column (vertically).");
+			console.log("Would you like this ship placed horizontally or vertically?\nType 'v' for vertical or 'h' for horizontal");
+			let o = prompt();
+			if(o.toLowerCase() == 'exit'){
+				return false;
+			}
+			let space = [];
+			console.log("\nWhat space will the ship be placed on?")
+			console.log(row);
+			space[0] = prompt.hide();
+			if(space[0].toLowerCase() == 'exit'){
+				return false;
+			}
+			console.log(col);
+			space[1] = prompt.hide();
+			if(space[1].toLowerCase() == 'exit'){
+				return false;
+			}
+			placed = board.place(ship, space, o);
+		}
+	}
+	return board;
+};
 
+let letter_max = String.fromCharCode(app.GRID_SIZE+65-1);
 
-let row = '\nType the letter of the row (A-' + 'letter_max)';
-let col = '\nType the number of the column (1-' + app.GRID_SIZE +')';
+let row = `\nType the letter of the row (A-${String.fromCharCode(app.GRID_SIZE+65-1)})`;
+let col = `\nType the number of the column (1-${app.GRID_SIZE })`;
 //driver function to actually run game
 let gameDriver = () =>{
 	intro_rules();
 	let boards = [];
 	boards[0] = new app.Grid();
 	boards[1] = new app.Grid();
-	let letter_max = String.fromCharCode(app.GRID_SIZE+65-1);
 	console.log("Now, both players will have a chance to place their ships. It's advisable to tell your opponent to look away.");
-	
-	let player_place = (player) =>{
-		console.log(`\n\n\n\n\n\n\n\n\n\nPlayer ${player}, it's time to place your ships on the grid. NOTE: Input will be hidden while typing.`);
-		for(let i in app.SHIP_SIZE){
-			let ship = new app.Ship(i);
-			let placed = false;
-			while(placed == false){
-				console.log(`A ${ship.type} is ${app.SHIP_SIZE[i]} spaces long.`)
-				console.log("Where on the board would you like the ship placed? The location you give will be the starting point");
-				console.log("The ship will take up successive spaces to the right on the same row (horizontally) or down on the same column (vertically).");
-				console.log("Would you like this ship placed horizontally or vertically?\nType 'v' for vertical or 'h' for horizontal");
-				let o = prompt();
-				if(o.toLowerCase() == 'exit'){
-					return false;
-				}
-				let space = [];
-				console.log("\nWhat space will the ship be placed on?")
-				console.log(row);
-				space[0] = prompt.hide();
-				if(space[0].toLowerCase() == 'exit'){
-					return false;
-				}
-				console.log(col);
-				space[1] = prompt.hide();
-				if(space[1].toLowerCase() == 'exit'){
-					return false;
-				}
-				placed = boards[player-1].place(ship, space, o);
-			}
-		}
-		return true;
-	};
-	if(player_place(1) == false){
+	let temp1 = player_place(boards[0], 1);
+	if(temp1 == false){
 		return;
 	}
+	boards[0] = temp1;
 	console.log("Player 1 is ready to play!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-	player_place(2);
+	let temp2 = player_place(boards[1], 2);
+	if(temp2 == false){
+		return;
+	}
+	boards[1] = temp2;
+
 	console.log("Player 2 is ready to play!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
 	console.log("Now the game officially begins! Each player will take turns attacking until the other is out of ships.\n\n\n");
@@ -99,7 +110,7 @@ let gameDriver = () =>{
 				if(i ==2){
 					console.log(`Player 1 has ${Object.keys(boards[0].ships_remaining).length} ships remaining.\n\n\n`);
 				}
-				if(moves[i-1].length>1){
+				if(moves[i-1].length>0){
 					console.log("Prior moves:");
 					console.log(moves[i-1].join(", "));
 				}
