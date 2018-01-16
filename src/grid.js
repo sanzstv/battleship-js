@@ -77,7 +77,6 @@ class Grid{
 	attack(space){
 		let target = mapSpacetoGrid(space[0], space[1]);
 		//space has already been attacked
-		console.log(target);
 		if(target == false){
 			console.log("Invalid input for space");
 			return false;
